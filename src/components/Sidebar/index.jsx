@@ -14,7 +14,7 @@ export function Sidebar() {
         <Avatar src='https://github.com/CauaMatheus.png'/>
 
         <strong>Cauã</strong>
-        <span>Web Developer</span>
+        <span>Back-end Developer</span>
       </div>
 
       <footer>
