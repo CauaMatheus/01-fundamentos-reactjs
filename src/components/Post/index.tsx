@@ -1,12 +1,27 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale'
-import { useState } from 'react';
+import { ChangeEvent, InvalidEvent, useState } from 'react';
 
 import { Avatar } from '../Avatar';
 import { Comment } from '../Comment';
 import styles from './styles.module.css';
+import { FormEvent } from 'react';
 
-export function Post({ author, content, tags, publishedAt }) {
+interface IPostProps {
+  author: {
+    avatar_url: string;
+    name: string;
+    role: string;
+  };
+  content: {
+    type: 'paragraph' | 'link';
+    content: string;
+  }[];
+  tags: string[];
+  publishedAt: Date;
+}
+
+export function Post({ author, content, tags, publishedAt }: IPostProps) {
   const publishedDateFormatted = format(publishedAt, "dd 'de' MMMM 'de' yyyy 'ás' hh:mm'h'", {
     locale: ptBR,
   });
@@ -16,14 +31,14 @@ export function Post({ author, content, tags, publishedAt }) {
   });
 
   const [newCommentText, setNewCommentText] = useState('');
-  function handleNewCommentTextChange(event) {
+  function handleNewCommentTextChange(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity('');
     setNewCommentText(event.target.value);
   }
   const isNewCommentEmpty = newCommentText.trim().length === 0;
   
-  const [comments, setComments] = useState([]);
-  function handleCreateNewComment(event) {
+  const [comments, setComments] = useState<string[]>([]);
+  function handleCreateNewComment(event: FormEvent) {
     event.preventDefault();
     if(!newCommentText.trim()) {
       return;
@@ -33,11 +48,11 @@ export function Post({ author, content, tags, publishedAt }) {
     setNewCommentText('');
   }
 
-  function handleNewCommentInvalid(event) {
+  function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity('Este campo é obrigatório');
   }
 
-  function deleteComment(content) {
+  function deleteComment(content: string) {
     setComments(comments.filter((comment) => comment !== content));
   }
 

@@ -4,7 +4,22 @@ import styles from './App.module.css';
 import './global.css';
 import { Sidebar } from './components/Sidebar';
 
-const posts = [
+interface IPost {
+  id: number;
+  author: {
+    avatar_url: string;
+    name: string;
+    role: string;
+  };
+  content: {
+    type: 'paragraph' | 'link';
+    content: string;
+  }[];
+  tags: string[];
+  publishedAt: Date;
+}
+
+const posts: IPost[] = [
   {
     id: 1,
     author: {
